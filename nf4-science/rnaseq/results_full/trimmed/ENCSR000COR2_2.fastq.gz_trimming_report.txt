@@ -1,0 +1,79 @@
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: ENCSR000COR2_2.fastq.gz
+Trimming mode: single-end
+Trim Galore version: 0.6.10
+Cutadapt version: 4.9
+Number of cores used for trimming: 1
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Using Illumina adapter for trimming (count: 48). Second best hit was smallRNA (count: 0)
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; auto-detected)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length before a sequence gets removed: 20 bp
+Running FastQC on the data once trimming has completed
+Output file will be GZIP compressed
+
+
+This is cutadapt 4.9 with Python 3.12.7
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC ENCSR000COR2_2.fastq.gz
+Processing single-end reads on 1 core ...
+Finished in 0.898 s (31.275 µs/read; 1.92 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                  28,727
+Reads with adapters:                     7,575 (26.4%)
+Reads written (passing filters):        28,727 (100.0%)
+
+Total basepairs processed:     2,183,252 bp
+Quality-trimmed:                       0 bp (0.0%)
+Total written (filtered):      2,171,171 bp (99.4%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 7575 times
+
+Minimum overlap: 1
+No. of allowed errors:
+1-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 19.6%
+  C: 42.4%
+  G: 27.1%
+  T: 10.9%
+  none/other: 0.0%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	5037	7181.8	0	5037
+2	1970	1795.4	0	1970
+3	384	448.9	0	384
+4	62	112.2	0	62
+5	23	28.1	0	23
+6	3	7.0	0	3
+7	2	1.8	0	2
+8	9	0.4	0	9
+9	5	0.1	0	4 1
+10	15	0.0	1	15
+11	7	0.0	1	7
+12	1	0.0	1	1
+14	2	0.0	1	2
+16	6	0.0	1	6
+17	2	0.0	1	2
+18	2	0.0	1	2
+19	3	0.0	1	3
+20	5	0.0	1	5
+21	10	0.0	1	2 8
+22	2	0.0	1	2
+23	4	0.0	1	4
+24	21	0.0	1	21
+
+RUN STATISTICS FOR INPUT FILE: ENCSR000COR2_2.fastq.gz
+=============================================
+28727 sequences processed in total
+Sequences removed because they became shorter than the length cutoff of 20 bp:	0 (0.0%)
+

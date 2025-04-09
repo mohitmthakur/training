@@ -1,0 +1,75 @@
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: ENCSR000COR1_1.fastq.gz
+Trimming mode: single-end
+Trim Galore version: 0.6.10
+Cutadapt version: 4.9
+Number of cores used for trimming: 1
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Using Illumina adapter for trimming (count: 12). Second best hit was Nextera (count: 0)
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; auto-detected)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length before a sequence gets removed: 20 bp
+Running FastQC on the data once trimming has completed
+Output file will be GZIP compressed
+
+
+This is cutadapt 4.9 with Python 3.12.7
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC ENCSR000COR1_1.fastq.gz
+Processing single-end reads on 1 core ...
+Finished in 0.722 s (18.967 µs/read; 3.16 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                  38,056
+Reads with adapters:                    11,994 (31.5%)
+Reads written (passing filters):        38,056 (100.0%)
+
+Total basepairs processed:     2,892,256 bp
+Quality-trimmed:                       0 bp (0.0%)
+Total written (filtered):      2,875,401 bp (99.4%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 11994 times
+
+Minimum overlap: 1
+No. of allowed errors:
+1-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 23.7%
+  C: 43.6%
+  G: 22.0%
+  T: 10.7%
+  none/other: 0.0%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	8284	9514.0	0	8284
+2	2950	2378.5	0	2950
+3	659	594.6	0	659
+4	59	148.7	0	59
+5	19	37.2	0	19
+6	1	9.3	0	1
+7	3	2.3	0	3
+9	3	0.1	0	3
+11	1	0.0	1	0 1
+13	2	0.0	1	2
+16	2	0.0	1	1 1
+17	1	0.0	1	1
+19	3	0.0	1	3
+20	1	0.0	1	1
+21	2	0.0	1	2
+23	1	0.0	1	1
+25	1	0.0	1	1
+28	2	0.0	1	0 2
+
+RUN STATISTICS FOR INPUT FILE: ENCSR000COR1_1.fastq.gz
+=============================================
+38056 sequences processed in total
+Sequences removed because they became shorter than the length cutoff of 20 bp:	0 (0.0%)
+

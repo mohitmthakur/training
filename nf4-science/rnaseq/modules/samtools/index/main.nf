@@ -1,20 +1,20 @@
 /*
- * Generate BAM index file
+ * Sort BAM file and generate BAM index file
  */
 process SAMTOOLS_INDEX {
 
     container 'community.wave.seqera.io/library/samtools:1.20--b5dfbd93de237464'
 
-    publishDir params.outdir, mode: 'symlink'
+    publishDir "${params.outdir}/bam", mode: 'copy'
 
     input:
-        path input_bam
+        tuple val(sampleId), path(input_bam)
 
     output:
-        tuple path(input_bam), path("${input_bam}.bai") , emit: bam
+        tuple val(sampleId), path("*.bam"), path("*.bam.bai") , emit: bam
 
     script:
     """
-    samtools index '$input_bam'
+    samtools sort ${input_bam} -o ${sampleId}.sorted.bam && samtools index ${sampleId}.sorted.bam
     """
 }
