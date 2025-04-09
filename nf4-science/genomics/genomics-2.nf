@@ -7,6 +7,9 @@
 // Primary input (file of input files, one per line)
 params.reads_bam = "${projectDir}/data/sample_bams.txt"
 
+// Primary input names (housekeeping names for output directories, files)
+params.cohort_name = "family-trio"
+
 // Output directory
 params.outdir = "results_genomics"
 
@@ -29,7 +32,7 @@ process SAMTOOLS_INDEX {
         path input_bam
 
     output:
-        tuple path(input_bam), path("${input_bam}.bai")
+        tuple path(input_bam), path("${input_bam}.bai") , emit: bam
 
     script:
     """
@@ -62,11 +65,78 @@ process GATK_HAPLOTYPECALLER {
     gatk HaplotypeCaller \
         -R ${ref_fasta} \
         -I ${input_bam} \
-        -O ${input_bam}.vcf \
+        -O ${input_bam}.g.vcf \
         -L ${interval_list}
     """
 }
 
+/*
+ * Call variants with GATK HaplotypeCaller
+ */
+process GATK_JOINT_HAPLOTYPECALLER {
+
+    container "community.wave.seqera.io/library/gatk4:4.5.0.0--730ee8817e436867"
+
+    publishDir params.outdir, mode: 'symlink'
+
+    input:
+        tuple path(input_bam), path(input_bam_index)
+        path ref_fasta
+        path ref_index
+        path ref_dict
+        path interval_list
+
+    output:
+        path "${input_bam}.g.vcf"     , emit: gvcf
+        path "${input_bam}.g.vcf.idx" , emit: idx
+
+    script:
+    """
+    gatk HaplotypeCaller \
+        -R ${ref_fasta} \
+        -I ${input_bam} \
+        -O ${input_bam}.g.vcf \
+        -L ${interval_list} \
+        -ERC GVCF
+    """
+}
+
+
+process GATK_JOINTGENOTYPING {
+
+    container "community.wave.seqera.io/library/gatk4:4.5.0.0--730ee8817e436867"
+
+    publishDir params.outdir, mode: 'copy'
+
+    input:
+        path all_gvcfs // This will be a collected channel of all vcfs
+        path all_idxs // This will be a collected channel of all vcf idxs
+        path interval_list
+        val cohort_name // For now, include an explicit parameter for the joint name
+        path ref_fasta
+        path ref_index
+        path ref_dict
+
+    output:
+        // path "${cohort_name}_gdb"   , emit: gdb
+        path "${cohort_name}.joint.vcf"     , emit: vcf
+        path "${cohort_name}.joint.vcf.idx" , emit: idx
+
+    script:
+    def gvcfs_line = all_gvcfs.collect { gvcf -> "-V ${gvcf}" }.join(' ') // String manipulation to put a -V between each entry, because gatk does it weird
+    """
+    gatk GenomicsDBImport \
+        ${gvcfs_line} \
+        -L ${interval_list} \
+        --genomicsdb-workspace-path ${cohort_name}_gdb
+
+    gatk GenotypeGVCFs \
+        -R ${ref_fasta} \
+        -V gendb://${cohort_name}_gdb \
+        -L ${interval_list} \
+        -O ${cohort_name}.joint.vcf
+    """
+}
 workflow {
 
     // Create input channel from a text file listing input file paths
@@ -82,11 +152,21 @@ workflow {
     SAMTOOLS_INDEX(reads_ch)
 
     // Call variants from the indexed BAM file
-    GATK_HAPLOTYPECALLER(
-        SAMTOOLS_INDEX.out,
+    GATK_JOINT_HAPLOTYPECALLER(
+        SAMTOOLS_INDEX.out.bam,
         ref_file,
         ref_index_file,
         ref_dict_file,
         intervals_file
+    )
+
+    GATK_JOINTGENOTYPING(
+        GATK_JOINT_HAPLOTYPECALLER.out.gvcf.collect(),
+        GATK_JOINT_HAPLOTYPECALLER.out.idx.collect(),
+        intervals_file,
+        params.cohort_name,
+        ref_file,
+        ref_index_file,
+        ref_dict_file,
     )
 }

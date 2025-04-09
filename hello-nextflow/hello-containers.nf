@@ -5,11 +5,13 @@
  */
 params.greeting = 'greetings.csv'
 params.batch = 'test-batch'
+params.character = 'tux'
 
 // Include modules
-include { sayHello } from './modules/sayHello.nf'
-include { convertToUpper } from './modules/convertToUpper.nf'
-include { collectGreetings } from './modules/collectGreetings.nf'
+include { sayHello } from './modules/local/sayHello.nf'
+include { convertToUpper } from './modules/local/convertToUpper.nf'
+include { collectGreetings } from './modules/local/collectGreetings.nf'
+include { cowpy } from './modules/local/cowpy.nf'
 
 workflow {
 
@@ -28,5 +30,7 @@ workflow {
     collectGreetings(convertToUpper.out.collect(), params.batch)
 
     // emit a message about the size of the batch
-    collectGreetings.out.count.view { "There were $it greetings in this batch" }
+    collectGreetings.out.count.view { count -> "There were ${count} greetings in this batch" }
+
+    cowpy(collectGreetings.out.outfile, params.character)
 }

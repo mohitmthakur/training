@@ -1,5 +1,5 @@
 {
-    "greet": "greetings.csv",
+    "greeting": "greetings.csv",
     "batch": "Trio",
-    "character": "turkey"
+    "character": "beavis"
 }

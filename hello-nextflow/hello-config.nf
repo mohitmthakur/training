@@ -8,10 +8,10 @@ params.batch = 'test-batch'
 params.character = 'turkey'
 
 // Include modules
-include { sayHello } from './modules/sayHello.nf'
-include { convertToUpper } from './modules/convertToUpper.nf'
-include { collectGreetings } from './modules/collectGreetings.nf'
-include { cowpy } from './modules/cowpy.nf'
+include { sayHello } from './modules/local/sayHello.nf'
+include { convertToUpper } from './modules/local/convertToUpper.nf'
+include { collectGreetings } from './modules/local/collectGreetings.nf'
+include { cowpy } from './modules/local/cowpy.nf'
 
 workflow {
 
