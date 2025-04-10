@@ -1,9 +1,8 @@
 #!/usr/bin/env nextflow
 
 params.greeting = 'Hello world!'
-greeting_ch = Channel.of(params.greeting)
 
-process SPLITLETTERS {
+process SPLIT_LETTERS {
     input:
     val x
 
@@ -20,7 +19,7 @@ process SPLITLETTERS {
     """
 }
 
-process CONVERTTOUPPER {
+process CONVERT_TO_UPPER {
     input:
     path y
 
@@ -36,7 +35,10 @@ process CONVERTTOUPPER {
 }
 
 workflow {
-    letters_ch = SPLITLETTERS(greeting_ch)
-    results_ch = CONVERTTOUPPER(letters_ch.flatten())
+
+    greeting_ch = Channel.of(params.greeting)
+
+    letters_ch = SPLIT_LETTERS(greeting_ch)
+    results_ch = CONVERT_TO_UPPER(letters_ch.flatten())
     results_ch.view{ it }
 }

@@ -28,7 +28,7 @@ params.greeting = 'greetings.csv'
 workflow {
 
     // Create an array to then be passed to a new channel
-    greeting_array = ['Hello', 'Bonjour', 'Konichiwa']
+    // greeting_array = ['Hello', 'Bonjour', 'Konichiwa']
 
     // Declare a channel for the required greeting input parameter
     // greeting_ch = Channel.of('Hello', 'Bonjour', 'Konichiwa') // Original, hard-coded way
