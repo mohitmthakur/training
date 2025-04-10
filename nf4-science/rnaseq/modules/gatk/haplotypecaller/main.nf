@@ -8,7 +8,7 @@ process GATK_HAPLOTYPECALLER {
     publishDir "${params.outdir}/vcf", mode: 'copy'
 
     input:
-        tuple path(input_bam), path(input_bam_index)
+        tuple val(sampleId), path(input_bam), path(input_bam_index)
         path ref_fasta
         path ref_index
         path ref_dict
@@ -25,6 +25,5 @@ process GATK_HAPLOTYPECALLER {
         -I ${input_bam} \
         -O ${input_bam}.g.vcf \
         -L ${interval_list} \
-        -ERC GVCF
     """
 }
