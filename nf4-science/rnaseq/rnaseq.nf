@@ -11,6 +11,7 @@ include { SAMTOOLS_FAIDX } from './modules/samtools/faidx/main.nf'
 include { GATK_HAPLOTYPECALLER } from './modules/gatk/haplotypecaller/main.nf'
 include { GATK_JOINTGENOTYPING } from './modules/gatk/jointgenotyping/main.nf'
 include { BCFTOOLS_CALL } from './modules/staphb/bcftools/call/main.nf'
+include { BCFTOOLS_VIEW } from './modules/staphb/bcftools/view/main.nf'
 
 /*
  * Pipeline parameters
@@ -58,6 +59,7 @@ workflow {
     // Create a reference index file
     SAMTOOLS_FAIDX(reference_fa)
 
-    BCFTOOLS_CALL(SAMTOOLS_INDEX.out.bam, reference_fa)
+    // BCFTOOLS_CALL(SAMTOOLS_INDEX.out.bam, reference_fa)
+    BCFTOOLS_VIEW(SAMTOOLS_INDEX.out.bam, reference_fa, interval_ch)
     // GATK_HAPLOTYPECALLER(SAMTOOLS_INDEX.out.bam, reference_fa_ch, SAMTOOLS_FAIDX.out.ref_index, GATK_CREATE_SEQ_DICT.out.ref_dict, interval_ch)
 }
